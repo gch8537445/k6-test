@@ -8,22 +8,22 @@ pipeline {
     }
 
     stages {
-        stage('准备测试环境') {
+/*         stage('准备测试环境') {
             steps {
-                sh 'docker pull grafana/k6:latest'
+                sh 'docker pull grafana/k6:1.0.0'
             }
-        }
+        } */
 
         stage('执行k6测试') {
             steps {
-                sh '''
+                sh """
                 docker run --rm -i -v "${WORKSPACE}:/scripts" \
                     grafana/k6:1.0.0 run \
                     --out influxdb=http://192.168.207.128:8086/k6 \
                     --vus ${params.VUS} \
                     --duration ${params.DURATION} \
                     /scripts/${params.TEST_SCRIPT}
-                '''
+                """
             }
         }
     }
