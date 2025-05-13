@@ -16,7 +16,6 @@ pipeline {
 
         stage('执行k6测试') {
             steps {
-                sh "echo 'Listing files in WORKSPACE:' && ls -la /data/docker_volume/jenkins" // 打印工作区文件列表
                 sh """
                 docker run --rm -i -v "/data/docker_volume/jenkins:/scripts" \
                     grafana/k6:1.0.0 run \
