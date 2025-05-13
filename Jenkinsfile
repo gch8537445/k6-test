@@ -37,7 +37,8 @@ pipeline {
                     sh """
                     docker run --rm -i -v "${hostWorkspacePath}:/scripts" \
                         grafana/k6:1.0.0 run \
-                        --out influxdb=http://192.168.207.128:8086/k6 \
+                        --out statsd=192.168.207.128:8125 \
+                        --out json=/scripts/results.json \
                         --vus ${params.VUS} \
                         --duration ${params.DURATION} \
                         /scripts/${params.TEST_SCRIPT}
