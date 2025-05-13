@@ -17,7 +17,7 @@ pipeline {
         stage('执行k6测试') {
             steps {
                 sh """
-                docker run --rm -i -v "/data/docker_volume/jenkins:/scripts" \
+                docker run --rm -i -v "/data/docker_volume/jenkins/workspace/k6-test:/scripts" \
                     grafana/k6:1.0.0 run \
                     --out influxdb=http://192.168.207.128:8086/k6 \
                     --vus ${params.VUS} \
