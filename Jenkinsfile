@@ -23,7 +23,7 @@ pipeline {
                     --out influxdb=http://192.168.207.128:8086/k6 \
                     --vus ${params.VUS} \
                     --duration ${params.DURATION} \
-                    /scripts/${params.TEST_SCRIPT}
+                    ${params.TEST_SCRIPT}
                 """
             }
         }
