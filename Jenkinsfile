@@ -37,8 +37,10 @@ pipeline {
                     sh """
                     docker run --rm -i -v "${hostWorkspacePath}:/scripts" \
                         grafana/k6:1.0.0 run \
-                        --out statsd=192.168.207.128:8125 \
-                        --out json=/scripts/results.json \
+                        -e K6_PROMETHEUS_RW_SERVER_URL=http://192.168.207.128:9090/api/v1/write
+                        --output experimental-prometheus-rw \
+                        --output json \
+                        --summary-export=/scripts/results.json \
                         --vus ${params.VUS} \
                         --duration ${params.DURATION} \
                         /scripts/${params.TEST_SCRIPT}
