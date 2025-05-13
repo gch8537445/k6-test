@@ -33,16 +33,6 @@ always {
             // 保存JSON结果作为构建产物
             archiveArtifacts artifacts: 'results.json', fingerprint: true
 
-            // 发布HTML报告
-            publishHTML([
-                allowMissing: false,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: '.',
-                reportFiles: 'summary.html',
-                reportName: 'K6性能测试报告'
-            ])
-
             // 添加指向Grafana仪表板的链接
             echo '查看详细的性能测试图表: http://192.168.207.128:3000/d/k6-performance'
         }
