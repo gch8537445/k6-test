@@ -8,11 +8,12 @@ pipeline {
     }
 
     stages {
-        /* stage('准备测试环境') {
+        stage('Checkout') {
             steps {
-                sh 'docker pull grafana/k6:1.0.0'
+                // 检出代码
+                checkout scm
             }
-        } */
+        }
 
         stage('执行k6测试') {
             steps {
@@ -50,14 +51,13 @@ pipeline {
     }
 
     post {
-        always {
-            // 将测试报告归档到 Jenkins
-            archiveArtifacts artifacts: '**/k6-report/**', allowEmptyArchive: true
-        }
-
         success {
+            echo '测试成功完成！'
             echo 'Prometheus: http://192.168.207.128:9090/'
             echo 'Grafana: http://192.168.207.128:3000/'
+        }
+        failure {
+            echo '测试失败，请检查日志。'
         }
     }
 }
