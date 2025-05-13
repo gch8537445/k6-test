@@ -52,7 +52,7 @@ pipeline {
     post {
         always {
             // 将测试报告归档到 Jenkins
-            archiveArtifacts artifacts: '**/playwright-report/**', allowEmptyArchive: true
+            archiveArtifacts artifacts: '**/k6-report/**', allowEmptyArchive: true
         }
 
         success {
