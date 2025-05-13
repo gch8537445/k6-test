@@ -8,7 +8,7 @@ pipeline {
     }
 
     stages {
-/*         stage('准备测试环境') {
+        /* stage('准备测试环境') {
             steps {
                 sh 'docker pull grafana/k6:1.0.0'
             }
@@ -35,7 +35,7 @@ pipeline {
                     // sh "ls -la ${hostWorkspacePath}" // 这行可能因为权限或路径问题在容器内执行失败，主要用于调试理解
 
                     sh """
-                    docker run --rm -i -v "/data/docker_volume/jenkins/workspace/k6-test:/scripts" \
+                    docker run --rm -i -v "${hostWorkspacePath}:/scripts" \
                         grafana/k6:1.0.0 run \
                         --out influxdb=http://192.168.207.128:8086/k6 \
                         --vus ${params.VUS} \
@@ -49,7 +49,7 @@ pipeline {
     }
 
     post {
-always {
+        always {
             // 保存JSON结果作为构建产物
             archiveArtifacts artifacts: 'results.json', fingerprint: true
 
