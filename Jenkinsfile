@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'VUS', defaultValue: '10', description: '虚拟用户数')
+        string(name: 'DURATION', defaultValue: '30s', description: '测试持续时间')
+        string(name: 'TEST_SCRIPT', defaultValue: 'script.js', description: '测试脚本文件名')
+    }
+
+    stages {
+        stage('准备测试环境') {
+            steps {
+                sh 'docker pull grafana/k6:latest'
+            }
+        }
+
+        stage('执行k6测试') {
+            steps {
+                sh '''
+                docker run --rm -i -v "${WORKSPACE}:/scripts" \
+                    grafana/k6:1.0.0 run \
+                    --vus ${params.VUS} \
+                    --duration ${params.DURATION} \
+                    /scripts/${params.TEST_SCRIPT}
+                '''
+            }
+        }
+    }
+
+    post {
+always {
+            // 保存JSON结果作为构建产物
+            archiveArtifacts artifacts: 'results.json', fingerprint: true
+
+            // 发布HTML报告
+            publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: '.',
+                reportFiles: 'summary.html',
+                reportName: 'K6性能测试报告'
+            ])
+
+            // 添加指向Grafana仪表板的链接
+            echo '查看详细的性能测试图表: http://192.168.207.128:3000/d/k6-performance'
+        }
+    }
+}
