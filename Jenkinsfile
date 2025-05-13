@@ -51,6 +51,11 @@ pipeline {
 
     post {
         always {
+            // 将测试报告归档到 Jenkins
+            archiveArtifacts artifacts: '**/playwright-report/**', allowEmptyArchive: true
+        }
+
+        success {
             echo 'Prometheus: http://192.168.207.128:9090/'
             echo 'Grafana: http://192.168.207.128:3000/'
         }
