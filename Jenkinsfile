@@ -39,6 +39,7 @@ pipeline {
                     docker run --rm -i -v "${hostWorkspacePath}:/scripts" \
                         grafana/k6:1.0.0 run \
                         -e K6_PROMETHEUS_RW_SERVER_URL=http://192.168.207.128:9090/api/v1/write \
+                        -e K6_PROMETHEUS_RW_NATIVE_HISTOGRAMS=true
                         -o experimental-prometheus-rw \
                         --vus ${params.VUS} \
                         --duration ${params.DURATION} \
