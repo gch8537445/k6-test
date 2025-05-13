@@ -19,6 +19,7 @@ pipeline {
                 sh '''
                 docker run --rm -i -v "${WORKSPACE}:/scripts" \
                     grafana/k6:1.0.0 run \
+                    --out influxdb=http://192.168.207.128:8086/k6 \
                     --vus ${params.VUS} \
                     --duration ${params.DURATION} \
                     /scripts/${params.TEST_SCRIPT}
