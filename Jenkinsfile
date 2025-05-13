@@ -18,7 +18,7 @@ pipeline {
             steps {
                 sh "echo 'Listing files in WORKSPACE:' && ls -la ${WORKSPACE}" // 打印工作区文件列表
                 sh """
-                docker run --rm -i -v "${WORKSPACE}:/scripts" \
+                docker run -i -v "${WORKSPACE}:/scripts" \
                     grafana/k6:1.0.0 run \
                     --out influxdb=http://192.168.207.128:8086/k6 \
                     --vus ${params.VUS} \
